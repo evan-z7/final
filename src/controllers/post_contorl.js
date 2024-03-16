@@ -1,26 +1,23 @@
 const validator = require('fastest-validator')
 const  models =require ('../../models')
 const cloudinary=require('cloudinary').v2
+const uploadImage=require('../cloudinary/cloudinary')
 
 
 //add new data function
   save =async (req,res)=>{
-    const Photo = await cloudinary.uploader.upload(req.file.path,
-      { public_id: `profilePics/${req.file.filename}` }, 
-          function (error, result) {
-              if (error) { 
-                 return next(error)
-              }
-                  console.log(result);
-              });
+    const imageName = new Date().getTime().toString()
+    const Photo = await uploadImage(req.file.buffer,imageName)
+
+    
     const post ={
         discreption:req.body.discreption, 
         image:Photo.url,
         destination:req.body.destination  ,
         date:req.body.date
 
-    }
-
+    } 
+ 
     const schema={
       discreption:{type:"string",optional:false,max:"500"},
       image:{type:"string",optional:false},
@@ -32,11 +29,11 @@ const cloudinary=require('cloudinary').v2
     if(validatorResponse !== true){
     return res.status(400).json({message:"validation faild",error:validatorResponse})
                                   }
-
+    
     try {
-         models.post.create(post)
+          models.post.create(post)
            res.status(201).json({success:true, message:"post created succefuly!"})
-        } 
+          } 
     catch (error){
         res.status(400).json({success:false,message:"something wrong"})
                  }
@@ -57,7 +54,11 @@ const cloudinary=require('cloudinary').v2
                   }
 
   }
+ 
+  /*
 
+
+  */
   //get all data 
   allData= (req,res)=>{
     try {

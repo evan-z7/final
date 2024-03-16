@@ -3,7 +3,7 @@ const postsConrtoller =require('../controllers/post_contorl')
 const router =express.Router()
 const {upload} = require('../utils/multerToHandelUpload')
 
-router.post ('/',upload.single('photo'),postsConrtoller.save)
+router.post ('/',upload.single('image'),postsConrtoller.save)
  
 router.get('/:id',postsConrtoller.show) 
 router.get('/',postsConrtoller.allData)
