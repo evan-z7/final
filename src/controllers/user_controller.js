@@ -10,16 +10,16 @@ save = (req, res) => {
     password: req.body.password,
     position: req.body.position,
     number: req.body.number,
-  }
+  }  
 
   const schema = {
     name: { type: "string", optional: false, max: "100" },
     email: {
-      type: "string", optional: false, max: "100",
+      type: "string", optional: true, max: "100",
       validator(value) { if (!validator.isEmail(value)) { throw new Error('email is invalid') } }
     },
-    password: { type: "string", optional: false, minLength: 8, validate(value) { if (value.includes('password')) { throw new Error('password is invalid') } } },
-    number: { type: "number", optional: false, max: "100" },
+    password: { type: "string", optional: true, minLength: 8, validate(value) { if (value.includes('password')) { throw new Error('password is invalid') } } },
+    number: { type: "string", optional: false, max: "100" },
     position: { type: "string", optional: false, max: "100" }
   }
   const v = new validator();
@@ -27,7 +27,7 @@ save = (req, res) => {
   if (validatorResponse !== true) {
     return res.status(400).json({ message: "validation faild", error: validatorResponse })
   }
-
+ 
   try {
     models.user.create(user)
     res.status(201).json({success:true, message: "user created succefuly!" })
