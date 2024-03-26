@@ -7,6 +7,8 @@ router.get('/:id',userConrtoller.show)
 router.get('/',userConrtoller.allData)
 router.patch('/:id',userConrtoller.updateData)
 router.delete('/:id',userConrtoller.drop)
+router.post('/login',userConrtoller.login)
+
 
 
 module.exports=router       

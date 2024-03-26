@@ -9,6 +9,6 @@ router.get('/:id',postsConrtoller.show)
 router.get('/',postsConrtoller.allData)
 // router.patch('/:id',postsConrtoller.updateData)
 router.delete('/:id',postsConrtoller.drop)
-
+// router.get('/:dest',postsConrtoller.destData)
 
 module.exports=router       

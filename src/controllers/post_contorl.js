@@ -13,7 +13,7 @@ const uploadImage=require('../cloudinary/cloudinary')
     const post ={
         discreption:req.body.discreption, 
         image:Photo.url,
-        destination:req.body.destination  ,
+        destination:req.body.destination ,
         date:req.body.date
 
     } 
@@ -37,7 +37,7 @@ const uploadImage=require('../cloudinary/cloudinary')
     catch (error){
         res.status(400).json({success:false,message:"something wrong"})
                  }
-          }   
+          }    
           
 //get data by ID function
   show= (req,res)=>{
@@ -55,10 +55,42 @@ const uploadImage=require('../cloudinary/cloudinary')
 
   }
  
+  //first try
+  // destData=(req,res)=>{
+  //   try {
+  //     models.post.findAll({where:{destination:'server'}}).then(result=>{
+  //       res.status(200).json(({success:true, data: result }))})
+  //     }
+  //     catch (error) {      
+  //           res.status(500).json({success:false, message: "something wrong" })
+  //     }
+  //   }
+  
   /*
+  second try
+async function findByName(destination) {
+  try {
+    const record = await post.findOne({
+      where: {
+        destination: destination ,
+      },
+    });
 
-
+    if (record) {
+      console.log('Found record:', record.dataValues); // Access data using dataValues
+    } else {
+      console.log('No record found with the name:', destination);
+    }
+  } catch (error) {
+    console.error('Error finding record:', error);
+  }
+}
   */
+
+
+
+ 
+
   //get all data 
   allData= (req,res)=>{
     try {
@@ -126,6 +158,7 @@ module.exports={
     allData:allData,
     // updateData:updateData,
     drop:drop,
+    // destData:destData
   
     
                 }
