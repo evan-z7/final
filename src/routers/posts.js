@@ -7,8 +7,8 @@ router.post ('/',upload.single('image'),postsConrtoller.save)
  
 router.get('/:id',postsConrtoller.show) 
 router.get('/',postsConrtoller.allData)
-// router.patch('/:id',postsConrtoller.updateData)
+router.patch('/:id',upload.single('image'),postsConrtoller.updateData)
 router.delete('/:id',postsConrtoller.drop)
-// router.get('/:dest',postsConrtoller.destData)
+router.get('/destination/search',postsConrtoller.destdata)
 
 module.exports=router       

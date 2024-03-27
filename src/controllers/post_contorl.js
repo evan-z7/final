@@ -5,7 +5,7 @@ const uploadImage=require('../cloudinary/cloudinary')
 
 
 //add new data function
-  save =async (req,res)=>{
+save =async (req,res)=>{
     const imageName = new Date().getTime().toString()
     const Photo = await uploadImage(req.file.buffer,imageName)
 
@@ -17,11 +17,11 @@ const uploadImage=require('../cloudinary/cloudinary')
         date:req.body.date
 
     } 
- 
+  
     const schema={
-      discreption:{type:"string",optional:false,max:"500"},
+      discreption:{type:"string",optional:false,max:500},
       image:{type:"string",optional:false},
-      destination:{type:"string",optional:false,max:"100"},
+      destination:{type:"string",optional:false,max:100},
       date:{type:"string",optional:false}
     }
     const v= new validator();
@@ -39,11 +39,11 @@ const uploadImage=require('../cloudinary/cloudinary')
                  }
           }    
 //get data by ID function
-  show= (req,res)=>{
+show= (req,res)=>{
     const id= req.params.id
     try {
     models.post.findByPk(id).then(result=>{
-      if(result){res.status(200).json(result)}
+      if(result){res.status(200).json(({success:true, data: result }))}
       else{res.status(400).json({success:false,message :"data not found"})
           }
         })
@@ -53,45 +53,29 @@ const uploadImage=require('../cloudinary/cloudinary')
                   }
 
   }
- 
-  //first try
-  // destData=(req,res)=>{
-  //   try {
-  //     models.post.findAll({where:{destination:'server'}}).then(result=>{
-  //       res.status(200).json(({success:true, data: result }))})
-  //     }
-  //     catch (error) {      
-  //           res.status(500).json({success:false, message: "something wrong" })
-  //     }
-  //   }
-  
-  /*
-  second try
-async function findByName(destination) {
+
+// get  data  by destination
+destdata = (req ,res)=>{
   try {
-    const record = await post.findOne({
-      where: {
-        destination: destination ,
-      },
-    });
+    const destination = req.body.destination; 
 
-    if (record) {
-      console.log('Found record:', record.dataValues); // Access data using dataValues
-    } else {
-      console.log('No record found with the name:', destination);
+    if (!destination) {
+      return res.status(400).json({ success: false, message: 'Missing destination parameter' })
     }
-  } catch (error) {
-    console.error('Error finding record:', error);
+
+    const posts = models.post.findAll({ where: { destination:destination } }).then(result=>{
+      if (result.length>0) {   res.status(200).json({ success: true, data: result })  } 
+      else  {   res.status(404).json({ success: false, message: 'No data found for the provided destination' })  }
+    }) 
+      }
+   catch (error) {
+    console.error(error)
+    res.status(500).json({ success: false, message: 'Internal server error' })
   }
-}
-  */
+ } 
 
-
-
- 
-
-  //get all data 
-  allData= (req,res)=>{
+//get all data 
+allData= (req,res)=>{
     try {
     models.post.findAll().then(result=>{
       res.status(200).json(({success:true, data: result }))})
@@ -103,34 +87,42 @@ async function findByName(destination) {
   }
 
 //updating some data
-// updateData = (req,res)=>{
+updateData = async(req,res)=>{
+  const imageName = new Date().getTime().toString()
+  const Photo = await uploadImage(req.file.buffer,imageName)
 
+  const id= req.params.id
+  const updatedPost ={
+    discreption:req.body.discreption, 
+    image:Photo.url,
+    destination:req.body.destination ,
+    date:req.body.date  
+  }
 
-
-// const userId =1
 
   
-// const schema={
-//   title:{type:"string",optional:false,max:"100"},
-//   content:{type:"string",optional:false,max:"500"},
-//   categoryId:{type:"number",optional:false}
-// }
+const schema={
+  discreption:{type:"string",optional:false,max:500},
+  image:{type:"string",optional:true},
+  destination:{type:"string",optional:false,max:100},
+  date:{type:"string",optional:false}
+}
 
-// const v= new validator();
-// const validatorResponse = v.validate(updatedPost,schema)
-// if(validatorResponse !== true){
-// return res.status(400).json({message:"validation faild",error:validatorResponse})
-//                               }
-// try {
-//   models.post.update(updatedPost, {where: {id:id , userId:userId}})
-//     res.status(200).json({message:"post updated succefully" })
-// } catch (error) {
-//     res.status(500).json({message:"something wrong"})
-// }
-// }
+const v= new validator();
+const validatorResponse = v.validate(updatedPost,schema)
+if(validatorResponse !== true){
+return res.status(400).json({success:false,message:"validation faild",error:validatorResponse})
+                              }
+try {
+  models.post.update(updatedPost, {where: {id:id }})
+    res.status(200).json({success:true, message:"post edited succefuly!"})
+} catch (error) {
+    res.status(500).json({success:false,message:"something wrong"})
+}
+}
 
 //delete data 
- drop = (req,res)=>{
+drop = (req,res)=>{
   const id= req.params.id
   try {
     models.post.destroy({where: {id:id }})
@@ -141,13 +133,12 @@ async function findByName(destination) {
  }
 
 
-module.exports={
+ module.exports={
     save:save,
     show:show,
     allData:allData,
-    // updateData:updateData,
+    updateData:updateData,
     drop:drop,
-    // destData:destData
-  
+    destdata: destdata  
     
                 }
