@@ -38,7 +38,6 @@ const uploadImage=require('../cloudinary/cloudinary')
         res.status(400).json({success:false,message:"something wrong"})
                  }
           }    
-          
 //get data by ID function
   show= (req,res)=>{
     const id= req.params.id
@@ -103,18 +102,10 @@ async function findByName(destination) {
 
   }
 
-
 //updating some data
 // updateData = (req,res)=>{
 
 
-//   const id= req.params.id
-//   const updatedPost ={
-//     title:req.body.title, 
-//     content:req.body.content,
-//     imageUrl: req.body.imageUrl,
-//     categoryId:req.body.categoryId
-//   }
 
 // const userId =1
 
@@ -148,8 +139,6 @@ async function findByName(destination) {
     res.status(500).json({success:false,message:"something wrong"})
   }
  }
-
-
 
 
 module.exports={
