@@ -10,6 +10,6 @@ app.use("/posts",postRoute)
 app.use("/user",userRoute)
 
 
-
-module.exports =app
  
+module.exports =app
+  
