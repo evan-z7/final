@@ -13,7 +13,8 @@ save =async (req,res)=>{
     const post ={
         discreption:req.body.discreption, 
         image:Photo.url,
-        destination:req.body.destination ,
+        receiver: req.body.receiver,
+        sender: req.body.sender,
         date:req.body.date
 
     } 
@@ -21,7 +22,8 @@ save =async (req,res)=>{
     const schema={
       discreption:{type:"string",optional:false,max:500},
       image:{type:"string",optional:false},
-      destination:{type:"string",optional:false,max:100},
+      receiver: { type: "number", optional: false },
+      sender: { type: "number", optional: false },
       date:{type:"string",optional:false}
     }
     const v= new validator();
@@ -54,18 +56,18 @@ show= (req,res)=>{
 
   }
 
-// get  data  by destination
+// get  data  by receiver
 destdata = (req ,res)=>{
   try {
-    const destination = req.body.destination; 
+    const receiver = req.body.receiver; 
 
-    if (!destination) {
-      return res.status(400).json({ success: false, message: 'Missing destination parameter' })
+    if (!receiver) {
+      return res.status(400).json({ success: false, message: 'Missing receiver parameter' })
     }
 
-    const posts = models.post.findAll({ where: { destination:destination } }).then(result=>{
+    const posts = models.post.findAll({ where: { receiver:receiver } }).then(result=>{
       if (result.length>0) {   res.status(200).json({ success: true, data: result })  } 
-      else  {   res.status(404).json({ success: false, message: 'No data found for the provided destination' })  }
+      else  {   res.status(404).json({ success: false, message: 'No data found for the provided receiver' })  }
     }) 
       }
    catch (error) {
@@ -95,7 +97,8 @@ updateData = async(req,res)=>{
   const updatedPost ={
     discreption:req.body.discreption, 
     image:Photo.url,
-    destination:req.body.destination ,
+  
+      
     date:req.body.date  
   }
 
@@ -104,8 +107,7 @@ updateData = async(req,res)=>{
 const schema={
   discreption:{type:"string",optional:false,max:500},
   image:{type:"string",optional:true},
-  destination:{type:"string",optional:false,max:100},
-  date:{type:"string",optional:false}
+    date:{type:"string",optional:false}
 }
 
 const v= new validator();

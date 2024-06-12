@@ -9,8 +9,23 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      discreption: {
-        type: Sequelize.STRING
+      receiver: {
+        type: Sequelize.INTEGER,
+        references: {
+          model: 'users', // name of the Target model
+          key: 'id', // key in the Target model that we're referencing
+        },
+        onUpdate: 'NO ACTION',
+        onDelete: 'NO ACTION'
+      },
+      sender: {
+        type: Sequelize.INTEGER,
+        references: {
+          model: 'users', // name of the Target model
+          key: 'id', // key in the Target model that we're referencing
+        },
+        onUpdate: 'NO ACTION',
+        onDelete: 'NO ACTION'
       },
       image: {
         type: Sequelize.STRING
