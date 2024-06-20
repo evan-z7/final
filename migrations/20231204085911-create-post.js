@@ -9,14 +9,8 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      receiver: {
-        type: Sequelize.INTEGER,
-        references: {
-          model: 'users', // name of the Target model
-          key: 'id', // key in the Target model that we're referencing
-        },
-        onUpdate: 'NO ACTION',
-        onDelete: 'NO ACTION'
+      discreption: {
+        type: Sequelize.STRING
       },
       sender: {
         type: Sequelize.INTEGER,
@@ -24,14 +18,20 @@ module.exports = {
           model: 'users', // name of the Target model
           key: 'id', // key in the Target model that we're referencing
         },
-        onUpdate: 'NO ACTION',
-        onDelete: 'NO ACTION'
+        onUpdate: 'CASCADE',
+        onDelete: 'SET NULL'
       },
       image: {
         type: Sequelize.STRING
       },
-      destination: {
-        type: Sequelize.STRING
+      receiver: {
+        type: Sequelize.INTEGER,
+        references: {
+          model: 'users', // name of the Target model
+          key: 'id', // key in the Target model that we're referencing
+        },
+         onUpdate: 'CASCADE',
+        onDelete: 'SET NULL'
       },
       date: {
         type: Sequelize.STRING

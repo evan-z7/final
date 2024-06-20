@@ -10,5 +10,7 @@ router.get('/',postsConrtoller.allData)
 router.patch('/:id',upload.single('image'),postsConrtoller.updateData)
 router.delete('/:id',postsConrtoller.drop)
 router.get('/destination/search',postsConrtoller.destdata)
+router.get('/users/names', postsConrtoller.UsersNames)
+
 
 module.exports=router       
