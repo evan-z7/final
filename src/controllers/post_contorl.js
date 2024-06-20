@@ -137,7 +137,7 @@
   // Get all users' names
  UsersNames = async (req, res) => {
   try {
-      const users = await models.user.findAll({ attributes: ['name'] }).then(result=>{
+      const users = await models.user.findAll({ attributes: ['id','name'] }).then(result=>{
          res.status(200).json({ success: true, data:result  })
       })
      
